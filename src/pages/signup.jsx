@@ -1,25 +1,35 @@
 import { useState } from "react";
-import { useAuth } from "../store/useAuth";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
-export default function Login() {
-  const [role, setRole] = useState("student");
+export default function Signup() {
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const login = useAuth((state) => state.login);
   const navigate = useNavigate();
 
-  const handleLogin = () => {
-    login(role, email || role);
-    navigate(role === "student" ? "/student" : "/counsellor");
+  const handleSignup = () => {
+    // Default role = student
+    console.log("New Student:", { username, email, password, role: "student" });
+
+    // Redirect to login after signup
+    navigate("/login");
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#FDFCE7]">
       <div className="bg-[#0E4839] p-8 rounded-2xl shadow-xl w-96">
         <h2 className="text-3xl font-bold mb-6 text-center text-[#FDFCE7]">
-          Login
+          Sign Up
         </h2>
+
+        {/* Username */}
+        <input
+          type="text"
+          placeholder="Enter your Username"
+          className="w-full p-3 border rounded mb-4 bg-[#FDFCE7] text-[#0E4839] placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-[#FDFCE7]"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+        />
 
         {/* Email */}
         <input
@@ -39,32 +49,23 @@ export default function Login() {
           onChange={(e) => setPassword(e.target.value)}
         />
 
-        {/* Role Selection */}
-        <select
-          className="w-full p-3 border rounded mb-4 bg-[#FDFCE7] text-[#0E4839] focus:outline-none focus:ring-2 focus:ring-[#FDFCE7]"
-          value={role}
-          onChange={(e) => setRole(e.target.value)}
-        >
-          <option value="student">Student</option>
-          <option value="counsellor">Counsellor</option>
-        </select>
-
-        {/* Login Button */}
+        {/* Signup Button */}
         <button
-          onClick={handleLogin}
+          onClick={handleSignup}
           className="w-full bg-[#FDFCE7] text-[#0E4839] py-3 rounded-lg font-semibold hover:bg-[#e5e4d3] transition"
         >
-          Login
+          Sign Up
         </button>
 
-        <p className="text-sm text-[#FDFCE7] mt-4 text-center">
-          Don’t have an account?{" "}
-          <span
-            onClick={() => navigate("/signup")}
-            className="font-semibold cursor-pointer hover:underline"
+        {/* Already have an account? */}
+        <p className="text-center text-sm mt-4 text-[#FDFCE7]">
+          Already have an account?{" "}
+          <Link
+            to="/login"
+            className="font-semibold hover:underline"
           >
-            Sign Up
-          </span>
+            Login
+          </Link>
         </p>
       </div>
     </div>
